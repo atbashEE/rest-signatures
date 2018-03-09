@@ -1,0 +1,116 @@
+= JSF utils
+Rudy De Busscher <rdebusscher@gmail.com>
+v0.1, ??/??/2018
+
+== Release notes
+
+=== 0.1
+
+* Initial version
+
+
+== POC
+
+This is a provisional implementation and will be improved significantly in the near future
+
+- Support for Authorization Signature headers (in combination with Atbash Octopus)
+- Better integrated support for keys.
+- Integration with other Atbash frameworks. (utils, config, ...)
+- Creation of a Rest Client (similar to MicroProfile specification) for easier usage.
+
+== Receiver Setup
+
+There are 2 different artifacts, one for the sender and one for the receiver.
+
+The following dependency is for the receiver side containing the JAX-RS Controller.
+
+----
+    <dependency>
+        <groupId>be.atbash.ee.security</groupId>
+        <artifactId>http-sig-jax-rs-reciever</artifactId>
+        <version>${atbash-http-sig.version}</version>
+    </dependency>
+
+----
+
+=== Define which endpoints are protected
+
+The signature headers aren't checked by default, the developer must indicate which endpoints
+
+Add the following annotation at the class level (all end points are checked) or the JAX-RS method (containing the @GET, @POST, etc) itself.
+
+----
+   @RestSignatureCheck
+----
+
+=== Define Key source
+
+The verification of the signatures requires the public key for it. They need to be supplied by a CDI bean implementing the interface.
+
+----
+be.atbash.ee.security.signature.api.SignatureKeyDataProvider
+----
+
+containing the method
+
+----
+SignatureKeyData getKeyData(String keyId);
+----
+
+The keyId is retrieved from the parameter in the Signature header, and this method needs to return the corresponding public key value for it.
+
+=== ContainerRequestFilter
+
+A ContainerRequestFilter is applied automatically (when the @RestSignatureCheck is detected) and necessary validations are performed.
+
+== Sender setup
+
+Add the following in the pom.xml where you want to use a Rest client which adds the Headers.
+
+----
+    <dependency>
+        <groupId>be.atbash.ee.security</groupId>
+        <artifactId>http-sig-jax-rs-sender</artifactId>
+        <version>${atbash-http-sig.version}</version>
+    </dependency>
+----
+
+=== Rest Client configuration
+
+The required interceptor and filter needs to be registered manually before the Signature header is added to the request.
+
+----
+    Client client = ClientBuilder.newClient();
+    client.register(SignatureClientRequestFilter.class);
+    client.register(SignatureWriterInterceptor.class);
+----
+
+The information required for the key will be obtained from the CDI bean implementing the interface
+
+----
+    be.atbash.ee.security.signature.api.SignatureKeyInfoProvider
+----
+
+having the method
+
+----
+   provideKeyFor(String method, URI uri);
+----
+
+The developer can specify which private key will be used for which endpoint (and even use a different key for a different method GET vs POST). Of course, the public counterpart of the key( or the key itself in case of a symmetric key) needs to be available at the server side.
+
+=== Specify the parameters
+
+Some minimal parameters are defined by default
+
+* (request-target) : method and target URL
+* date : Date when the request is created
+* digest : In case POST or PUT method, the digest header is added containing the hash of the payload.
+
+In case you want to define which parameters are used for the signature, implement a CDI bean with the interface
+
+----
+    be.atbash.ee.security.signature.api.sign.SignatureInfoProvider
+----
+
+

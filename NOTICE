@@ -1,0 +1,13 @@
+Atbash http-signature : Implementation of the specification for end-to-end protection.
+
+Copyright 2018 by Rudy De Busscher
+
+------------------------------------------------------------------------
+See the file LICENSE
+------------------------------------------------------------------------
+
+Some classes or methods of this software were originally based on the following:
+* Tomitribe Java http signatures
+  https://github.com/tomitribe/http-signatures-java
+  under Apache License, v2.0
+
