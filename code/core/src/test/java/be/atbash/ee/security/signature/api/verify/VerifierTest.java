@@ -238,8 +238,6 @@ public class VerifierTest {
 
     @Test(expected = UnsupportedAlgorithmException.class)
     public void verify_wrongAlgorithm() throws ParseException {
-        when(signatureKeyDataProviderMock.getKeyData(KEY_ID1)).thenReturn(null);
-
         ConfigurableFixedTimeProvider.setFixedDate("07/06/2014 20:51:35 GMT");
 
         MultivaluedMap<String, String> headers = new MultivaluedHashMap<>();
