@@ -40,7 +40,7 @@
     </repositories>
 
     <properties>
-        <atbash.config.version>0.9.1</atbash.config.version>
+        <atbash.config.version>0.9.2</atbash.config.version>
     </properties>
     <dependencies>
 

@@ -32,7 +32,7 @@
     <artifactId>test-parent</artifactId>
 
     <properties>
-        <nimbus-jose-jwt.version>4.36.1</nimbus-jose-jwt.version>
+        <nimbus-jose-jwt.version>5.7</nimbus-jose-jwt.version>
     </properties>
     <dependencies>
         <dependency>
