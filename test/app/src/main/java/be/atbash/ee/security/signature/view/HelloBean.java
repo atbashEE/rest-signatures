@@ -31,7 +31,8 @@ import javax.ws.rs.core.Response;
 @Model
 public class HelloBean {
 
-    public void sayHello() {
+    public void getWithHMAC() {
+        System.out.println("Client - GET example with HMAC ");
         Client client = ClientBuilder.newClient();
         client.register(SignatureClientRequestFilter.class);
         client.register(SignatureWriterInterceptor.class);
@@ -40,11 +41,12 @@ public class HelloBean {
                 .request(MediaType.APPLICATION_JSON)
                 .get();
 
-        System.out.println(response.getStatus());
-        System.out.println(response.readEntity(String.class));
+        System.out.println("Client - received status : " + response.getStatus());
+        System.out.println("Client - received response : " + response.readEntity(String.class));
     }
 
-    public void doGreeting() {
+    public void postWithHMAC() {
+        System.out.println("Client - POST example with HMAC ");
         Client client = ClientBuilder.newClient();
         client.register(SignatureClientRequestFilter.class);
         client.register(SignatureWriterInterceptor.class);
@@ -53,11 +55,12 @@ public class HelloBean {
                 .request(MediaType.APPLICATION_JSON)
                 .post(Entity.entity(new Data("Rudy"), MediaType.APPLICATION_JSON));
 
-        System.out.println(response.getStatus());
-        System.out.println(response.readEntity(String.class));
+        System.out.println("Client - received status : " + response.getStatus());
+        System.out.println("Client - received response : " + response.readEntity(String.class));
     }
 
-    public void doRSA() {
+    public void postWithRSA() {
+        System.out.println("Client - POST example with RSA keys ");
         Client client = ClientBuilder.newClient();
         client.register(SignatureClientRequestFilter.class);
         client.register(SignatureWriterInterceptor.class);
@@ -66,6 +69,7 @@ public class HelloBean {
                 .request(MediaType.APPLICATION_JSON)
                 .post(Entity.entity(new Data("rsa"), MediaType.APPLICATION_JSON));
 
-        System.out.println(response.readEntity(String.class));
+        System.out.println("Client - received status : " + response.getStatus());
+        System.out.println("Client - received response : " + response.readEntity(String.class));
     }
 }
