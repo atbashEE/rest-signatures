@@ -21,7 +21,7 @@
     <parent>
         <groupId>be.atbash.ee.security.http-sig.test</groupId>
         <artifactId>test-parent</artifactId>
-        <version>0.1-SNAPSHOT</version>
+        <version>0.1</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
@@ -54,7 +54,7 @@
         <dependency>
             <groupId>be.atbash.ee.security</groupId>
             <artifactId>http-sig-jax-rs-reciever</artifactId>
-            <version>0.1-SNAPSHOT</version>
+            <version>0.1</version>
         </dependency>
 
         <dependency>
